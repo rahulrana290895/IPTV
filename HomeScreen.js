@@ -3,7 +3,6 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Icon from 'react-native-vector-icons/MaterialIcons'; // Import an icon library
 import Apps from './src/component/Apps';
-import Home from './src/component/Home';
 import Movies from './src/component/Movies';
 import Series from './src/component/Series';
 import LiveTV from './src/component/LiveTV';
@@ -25,9 +24,7 @@ const HomeScreen = ({ route, navigation }) => {
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
 
-          if (route.name === 'Home') {
-            iconName = 'home'; // Icon name from MaterialIcons
-          } else if (route.name === 'Movies') {
+          if (route.name === 'Movies') {
             iconName = 'movie';
           } else if (route.name === 'Series') {
             iconName = 'live-tv';
@@ -40,13 +37,16 @@ const HomeScreen = ({ route, navigation }) => {
           // Return the icon component
           return <Icon name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: 'tomato',
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: '#ff141b',
+        tabBarInactiveTintColor: 'white',
+        tabBarStyle: {
+          backgroundColor: 'black',  // Set the background color of the tab bar to black
+        },
+
       })}
     >
-      <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Movies" component={Movies} />
       <Tab.Screen name="Live TV" component={LiveTV} />
+      <Tab.Screen name="Movies" component={Movies} />
       <Tab.Screen name="Series" component={Series} />
       <Tab.Screen name="Apps" component={Apps} />
     </Tab.Navigator>
