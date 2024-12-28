@@ -6,9 +6,9 @@ import Apps from './src/component/Apps';
 import Movies from './src/component/Movies';
 import Series from './src/component/Series';
 import LiveTV from './src/component/LiveTV';
+import { View, Image, TouchableOpacity, Text } from 'react-native'; // For custom header components
 
 const Tab = createBottomTabNavigator();
-
 
 const HomeScreen = ({ route, navigation }) => {
   const { user } = route.params || {};
@@ -16,6 +16,11 @@ const HomeScreen = ({ route, navigation }) => {
   const handleLogout = async () => {
     await AsyncStorage.removeItem('userToken'); // Clear token
     navigation.replace('Login'); // Navigate back to Login screen
+  };
+
+  const handleSearch = () => {
+    // Handle search action here
+    console.log('Search icon pressed');
   };
 
   return (
@@ -42,7 +47,32 @@ const HomeScreen = ({ route, navigation }) => {
         tabBarStyle: {
           backgroundColor: 'black',  // Set the background color of the tab bar to black
         },
-
+        headerStyle: {
+          backgroundColor: 'black',  // Set the header background color to black
+        },
+        headerTintColor: 'white',  // Set the header text color to white
+        headerLeft: () => (
+          <View style={{ paddingLeft: 15 }}>
+            {/* Logo on the left */}
+            <Image
+              source={require('./assets/avatar.png')}  // Replace with your logo image path
+              style={{ width: 40, height: 40 }}
+            />
+          </View>
+        ),
+        headerTitle: () => (
+          <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
+            <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'white', marginLeft: '10' }}>
+              SkyStarTv
+            </Text>
+          </View>
+        ),
+        headerRight: () => (
+          <TouchableOpacity onPress={handleSearch} style={{ paddingRight: 15 }}>
+            {/* Search icon on the right */}
+            <Icon name="search" size={30} color="white" />
+          </TouchableOpacity>
+        ),
       })}
     >
       <Tab.Screen name="Live TV" component={LiveTV} />

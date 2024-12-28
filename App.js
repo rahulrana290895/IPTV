@@ -5,6 +5,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import LoginScreen from './LoginScreen';
 import HomeScreen from './HomeScreen';
+import CategoryMovies from './CategoryMovies';
+import CategoryWebseries from './CategoryWebseries';
 
 const Stack = createStackNavigator();
 
@@ -40,10 +42,19 @@ export default function App() {
             {props => <HomeScreen {...props} />}
           </Stack.Screen>
         ) : (
-          <Stack.Screen name="Login" >
+          <Stack.Screen name="Login" options={{ headerShown: false }}>
             {props => <LoginScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
           </Stack.Screen>
         )}
+
+          <Stack.Screen name="CategoryMovies" >
+            {props => <CategoryMovies {...props}  />}
+          </Stack.Screen>
+
+          <Stack.Screen name="CategoryWebseries" >
+            {props => <CategoryWebseries {...props}  />}
+          </Stack.Screen>
+
       </Stack.Navigator>
     </NavigationContainer>
   );

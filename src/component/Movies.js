@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  StyleSheet,
-  Image
-} from "react-native";
+import { View, Text, TouchableOpacity,  ScrollView,  StyleSheet,  Image } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const Movies = () => {
   const [categories, setCategories] = useState([]);
   const [latestMovies, setLatestMovies] = useState([]);
-
+  const [Movies, setMovies] = useState([]);
+  const navigation = useNavigation();
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -42,6 +37,19 @@ const Movies = () => {
     latestMovies();
   }, []);
 
+  useEffect(() => {
+    const Movies = async () => {
+      try {
+        const moviesres = await fetch("https://buddybonding.com/more/IPTV/api/categoryMovies.php"); // Replace with your API URL
+        const moviesd = await moviesres.json();
+        setMovies(moviesd); // Update categories state
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+      }
+    };
+
+    Movies();
+  }, []);
 
 
   return (
@@ -54,7 +62,7 @@ const Movies = () => {
           contentContainerStyle={styles.scrollView}
         >
           {categories.map((category) => (
-            <TouchableOpacity key={category.id} style={styles.pill}>
+            <TouchableOpacity key={category.id} style={styles.pill} onPress={() => navigation.navigate('CategoryMovies', {categoryId: category.id})}>
               <Text style={styles.pillText}>{category.name}</Text>
             </TouchableOpacity>
           ))}
@@ -79,6 +87,32 @@ const Movies = () => {
           ))}
         </ScrollView>
       </View>
+
+
+      {Movies.map((res) => (
+  <View style={styles.container} key={res.id}>
+    <View style={styles.titleheader}>
+      <Text style={styles.title}>{res.name} Movies</Text>
+      <TouchableOpacity style={styles.linkContainer} onPress={() => navigation.navigate('CategoryMovies', {categoryId: res.id})}>
+        <Text style={styles.seeall}>See All</Text>
+      </TouchableOpacity>
+    </View>
+    
+    <ScrollView
+      horizontal
+      showsHorizontalScrollIndicator={false} // Hides the horizontal scroll indicator
+      contentContainerStyle={styles.scrollView}
+    >
+      {res.movies.map((movie) => (
+        <Image 
+          key={movie.id} 
+          source={{ uri: movie.img }} 
+          style={styles.poster} 
+        />
+      ))}
+    </ScrollView>
+  </View>
+))}
 
 
 
@@ -121,6 +155,19 @@ const styles = StyleSheet.create({
     borderRadius: 10, // Optional: rounded corners for the images
     marginRight: 10, // Space between images
   },
+  seeall: {
+    color: "#ff141b", // Space between images
+    fontSize:16,
+  },
+  titleheader: {
+    flexDirection: 'row',  // Aligns title and link horizontally
+    justifyContent: 'space-between',  // Pushes the title to the left and link to the right
+    alignItems: 'center',
+    width: '100%',
+    paddingRight: 10.
+  },
+  linkContainer: {
+  }
 
 });
 

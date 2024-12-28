@@ -9,9 +9,11 @@ import {
 } from "react-native";
 
 const LiveTV = () => {
-  const [categories, setCategories] = useState([]);
-  const [channels, setChannels] = useState([]);
+  const [categories, setCategories] = useState([]);  // To store genres
+  const [channels, setChannels] = useState([]);     // To store channels
+  const [selectedCategory, setSelectedCategory] = useState(null); // To track selected category
 
+  // Fetch categories on component mount
   useEffect(() => {
     const fetchCategories = async () => {
       try {
@@ -26,55 +28,62 @@ const LiveTV = () => {
     fetchCategories();
   }, []);
 
+  // Fetch channels when a genre is selected
   useEffect(() => {
-    const fetchChannnels = async () => {
-      try {
-        const channelresponse = await fetch("https://buddybonding.com/more/IPTV/api/channels.php"); // Replace with your API URL
-        const channeldata = await channelresponse.json();
-        setChannels(channeldata); // Update categories state
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
+    if (selectedCategory) {
+      const fetchChannels = async () => {
+        try {
+          const channelresponse = await fetch(`https://buddybonding.com/more/IPTV/api/channels.php?genre_id=${selectedCategory}`); // Add selected category ID in the API call
+          const channeldata = await channelresponse.json();
+          setChannels(channeldata); // Update channels state
+        } catch (error) {
+          console.error("Error fetching channels:", error);
+        }
+      };
 
-    fetchChannnels();
-  }, []);
-
-
-
+      fetchChannels();
+    }
+  }, [selectedCategory]); // Fetch channels whenever selectedCategory changes
 
   return (
     <ScrollView style={styles.body}>
- 
       <View style={styles.container}>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false} // Hides the scrollbar
           contentContainerStyle={styles.scrollView}
         >
-
-            <TouchableOpacity key="0" style={styles.pill}>
-              <Text style={styles.pillText}>See All</Text>
-            </TouchableOpacity>
+          <TouchableOpacity
+            key="0"
+            style={styles.pill}
+            onPress={() => setSelectedCategory(null)} // "See All" button clears the selection
+          >
+            <Text style={styles.pillText}>See All</Text>
+          </TouchableOpacity>
 
           {categories.map((category) => (
-            <TouchableOpacity key={category.id} style={styles.pill}>
+            <TouchableOpacity
+              key={category.id}
+              style={styles.pill}
+              onPress={() => setSelectedCategory(category.id)} // Update selected category on click
+            >
               <Text style={styles.pillText}>{category.name}</Text>
             </TouchableOpacity>
           ))}
-
         </ScrollView>
       </View>
 
-    <Text style={styles.title}>Explore Channels</Text>
+      <Text style={styles.title}>Explore Channels</Text>
 
-
-    <View style={styles.gridContainer}>
-    {channels.map((image) => (
-            <Image key={image.id} source={{ uri: image.img }} style={styles.image} />
-          ))}
-    </View>
-
+      <View style={styles.gridContainer}>
+        {channels.map((channel) => (
+          <Image
+            key={channel.id}
+            source={{ uri: channel.img }}
+            style={styles.image}
+          />
+        ))}
+      </View>
     </ScrollView>
   );
 };
@@ -106,10 +115,9 @@ const styles = StyleSheet.create({
   },
   title: {
     color: "#ffffff",
-    fontSize:18,
+    fontSize: 18,
     margin: 10,
   },
-
   image: {
     width: '30%', // You can set a fixed width or use percentage to create columns
     height: 72,
@@ -117,13 +125,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     borderRadius: 5
-
   },
   gridContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     margin: 10
   },
-
 });
+
 export default LiveTV;
