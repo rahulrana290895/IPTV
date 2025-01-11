@@ -47,11 +47,11 @@ export default function App() {
           </Stack.Screen>
         )}
 
-          <Stack.Screen name="CategoryMovies" >
+          <Stack.Screen name="CategoryMovies" options={{ headerTitle: 'SparkWave',headerStyle: { backgroundColor: '#000' },headerTintColor: '#fff', }}>
             {props => <CategoryMovies {...props}  />}
           </Stack.Screen>
 
-          <Stack.Screen name="CategoryWebseries" >
+          <Stack.Screen name="CategoryWebseries" options={{ headerTitle: 'SparkWave',headerStyle: { backgroundColor: '#000' },headerTintColor: '#fff', }}>
             {props => <CategoryWebseries {...props}  />}
           </Stack.Screen>
 

@@ -11,7 +11,7 @@ import {
 const LiveTV = () => {
   const [categories, setCategories] = useState([]);  // To store genres
   const [channels, setChannels] = useState([]);     // To store channels
-  const [selectedCategory, setSelectedCategory] = useState(null); // To track selected category
+  const [selectedCategory, setSelectedCategory] = useState([0]); // To track selected category
 
   // Fetch categories on component mount
   useEffect(() => {
@@ -56,7 +56,7 @@ const LiveTV = () => {
           <TouchableOpacity
             key="0"
             style={styles.pill}
-            onPress={() => setSelectedCategory(null)} // "See All" button clears the selection
+            onPress={() => setSelectedCategory(0)} // "See All" button clears the selection
           >
             <Text style={styles.pillText}>See All</Text>
           </TouchableOpacity>

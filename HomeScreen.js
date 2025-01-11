@@ -63,7 +63,7 @@ const HomeScreen = ({ route, navigation }) => {
         headerTitle: () => (
           <View style={{ alignItems: 'center', flex: 1, justifyContent: 'center' }}>
             <Text style={{ fontSize: 18, fontWeight: 'bold', color: 'white', marginLeft: '10' }}>
-              SkyStarTv
+              SparkWave
             </Text>
           </View>
         ),
