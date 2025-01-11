@@ -1,17 +1,12 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  ScrollView,
-  StyleSheet,
-  Image
-} from "react-native";
+import { View, Text, TouchableOpacity, ScrollView, StyleSheet, Image } from "react-native";
+import { useNavigation } from "@react-navigation/native";
 
 const LiveTV = () => {
   const [categories, setCategories] = useState([]);  // To store genres
   const [channels, setChannels] = useState([]);     // To store channels
   const [selectedCategory, setSelectedCategory] = useState([0]); // To track selected category
+  const navigation = useNavigation();
 
   // Fetch categories on component mount
   useEffect(() => {
@@ -77,11 +72,13 @@ const LiveTV = () => {
 
       <View style={styles.gridContainer}>
         {channels.map((channel) => (
-          <Image
-            key={channel.id}
-            source={{ uri: channel.img }}
-            style={styles.image}
-          />
+          <TouchableOpacity key={channel.url} style={styles.pill} onPress={() => navigation.navigate('PlayChannel', { url: channel.url })}>
+            <Image
+              key={channel.id}
+              source={{ uri: channel.img }}
+              style={styles.image}
+            />
+          </TouchableOpacity>
         ))}
       </View>
     </ScrollView>

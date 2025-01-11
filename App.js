@@ -7,6 +7,7 @@ import LoginScreen from './LoginScreen';
 import HomeScreen from './HomeScreen';
 import CategoryMovies from './CategoryMovies';
 import CategoryWebseries from './CategoryWebseries';
+import PlayChannel from './PlayChannel';
 
 const Stack = createStackNavigator();
 
@@ -53,6 +54,10 @@ export default function App() {
 
           <Stack.Screen name="CategoryWebseries" options={{ headerTitle: 'SparkWave',headerStyle: { backgroundColor: '#000' },headerTintColor: '#fff', }}>
             {props => <CategoryWebseries {...props}  />}
+          </Stack.Screen>
+
+          <Stack.Screen name="PlayChannel" options={{ headerTitle: 'SparkWave',headerStyle: { backgroundColor: '#000' },headerTintColor: '#fff', }}>
+            {props => <PlayChannel {...props}  />}
           </Stack.Screen>
 
       </Stack.Navigator>
